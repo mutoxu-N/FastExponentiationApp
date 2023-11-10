@@ -1,8 +1,8 @@
 package com.github.mutoxu_n.fastexponentiationapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.github.mutoxu_n.fastexponentiationapp.databinding.ActivityMainBinding
@@ -19,21 +19,51 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         binding.base.doOnTextChanged { text, _, _, _ ->
-            val v = Integer.parseInt(text.toString())
-            Log.e(this.localClassName, "base: $v")
-            viewModel.setBase(v)
+            try {
+                val v = text.toString().toLong()
+                binding.base.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
+                viewModel.setBase(v)
+
+            } catch (e: NumberFormatException) {
+                if(text.toString().isNotEmpty()){
+                    val drawable = AppCompatResources.getDrawable(
+                        this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
+                    drawable.setTint(getColor(R.color.red))
+                    binding.base.background = drawable
+                }
+            }
         }
 
         binding.exp.doOnTextChanged { text, _, _, _ ->
-            val v = Integer.parseInt(text.toString())
-            Log.e(this.localClassName, "exp: $v")
-            viewModel.setExp(v)
+            try {
+                val v = text.toString().toLong()
+                binding.base.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
+                viewModel.setExp(v)
+
+            } catch (e: NumberFormatException) {
+                if(text.toString().isNotEmpty()){
+                    val drawable = AppCompatResources.getDrawable(
+                        this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
+                    drawable.setTint(getColor(R.color.red))
+                    binding.base.background = drawable
+                }
+            }
         }
 
         binding.num.doOnTextChanged { text, _, _, _ ->
-            val v = Integer.parseInt(text.toString())
-            Log.e(this.localClassName, "num: $v")
-            viewModel.setNum(v)
+            try {
+                val v = text.toString().toLong()
+                binding.base.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
+                viewModel.setNum(v)
+
+            } catch (e: NumberFormatException) {
+                if(text.toString().isNotEmpty()){
+                    val drawable = AppCompatResources.getDrawable(
+                        this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
+                    drawable.setTint(getColor(R.color.red))
+                    binding.base.background = drawable
+                }
+            }
         }
 
         viewModel.result.observe(this) { it?.let {

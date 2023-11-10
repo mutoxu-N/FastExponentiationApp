@@ -7,89 +7,114 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/linear1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="20dp"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/base"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-
-            android:importantForAutofill="no"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"
-            android:textSize="50sp"
-            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:textSize="50sp"
-            android:text="@string/caret" />
-
-        <EditText
-            android:id="@+id/exp"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-
-            android:importantForAutofill="no"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"
-            android:textSize="50sp"
-            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="10dp"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear1">
 
-        <TextView
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/pivot1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:textSize="50sp"
-            android:text="@string/mod" />
 
-        <EditText
-            android:id="@+id/num"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
 
-            android:importantForAutofill="no"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"
-            android:textSize="50sp"
-            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
-        <TextView
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/base"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="100dp"
+
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:selectAllOnFocus="true"
+                android:gravity="end"
+                android:textSize="@dimen/spEdit"
+                tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:textSize="@dimen/spText"
+                android:text="@string/caret" />
+
+            <EditText
+                android:id="@+id/exp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="100dp"
+
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:selectAllOnFocus="true"
+                android:gravity="end"
+                android:textSize="@dimen/spEdit"
+                tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:textSize="50sp"
-            android:text="@string/equal" />
 
-        <TextView
-            android:id="@+id/result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="50sp"
-            android:text="" />
+            android:layout_marginTop="10dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pivot1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:textSize="@dimen/spText"
+                android:text="@string/mod" />
+
+            <EditText
+                android:id="@+id/num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="100dp"
+
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:selectAllOnFocus="true"
+                android:gravity="end"
+                android:textSize="@dimen/spEdit"
+                tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:textSize="@dimen/spText"
+                android:text="@string/equal" />
+
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/spResult"
+                android:text="" />
+        </LinearLayout>
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

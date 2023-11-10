@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spEdit">50sp</dimen>
+    <dimen name="spText">30sp</dimen>
+    <dimen name="spResult">50sp</dimen>
+</resources>

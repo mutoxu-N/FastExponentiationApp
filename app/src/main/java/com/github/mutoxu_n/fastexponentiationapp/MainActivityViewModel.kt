@@ -1,22 +1,21 @@
 package com.github.mutoxu_n.fastexponentiationapp
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MainActivityViewModel: ViewModel() {
-    private var _base: MutableLiveData<Int> = MutableLiveData(null)
-    val base: LiveData<Int> get() = _base
+    private var _base: MutableLiveData<Long> = MutableLiveData(null)
+    val base: LiveData<Long> get() = _base
 
-    private var _exp: MutableLiveData<Int> = MutableLiveData(null)
-    val exp: LiveData<Int> get() = _exp
+    private var _exp: MutableLiveData<Long> = MutableLiveData(null)
+    val exp: LiveData<Long> get() = _exp
 
-    private var _num: MutableLiveData<Int> = MutableLiveData(null)
-    val num: LiveData<Int> get() = _num
+    private var _num: MutableLiveData<Long> = MutableLiveData(null)
+    val num: LiveData<Long> get() = _num
 
-    private var _result: MutableLiveData<Int> = MutableLiveData(null)
-    val result: LiveData<Int> get() = _result
+    private var _result: MutableLiveData<Long> = MutableLiveData(null)
+    val result: LiveData<Long> get() = _result
 
     private fun calc() {
         var b = base.value
@@ -25,9 +24,9 @@ class MainActivityViewModel: ViewModel() {
         if(b == null || e == null || n == null) return
 
         // 高速指数演算
-        var r = 1
+        var r = 1L
         while(e!! > 0) {
-            if(e and 1 == 1) {
+            if(e and 1 == 1L) {
                 r *= b
                 r %= n
             }
@@ -36,23 +35,21 @@ class MainActivityViewModel: ViewModel() {
             b %= n
         }
 
-        Log.e(this.javaClass.name, "$r")
-
         // output
         _result.value = r
     }
 
-    fun setBase(base: Int) {
+    fun setBase(base: Long) {
         _base.value = base
         calc()
     }
 
-    fun setExp(exp: Int) {
+    fun setExp(exp: Long) {
         _exp.value = exp
         calc()
     }
 
-    fun setNum(num: Int) {
+    fun setNum(num: Long) {
         _num.value = num
         calc()
     }

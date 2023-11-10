@@ -3,4 +3,5 @@
     <string name="caret">^</string>
     <string name="mod">mod</string>
     <string name="equal">=</string>
+    <string name="sync">Sync</string>
 </resources>

@@ -123,6 +123,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/container_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -236,6 +237,20 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/sync"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/container_bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="3dp"
+
+        android:text="@string/sync" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

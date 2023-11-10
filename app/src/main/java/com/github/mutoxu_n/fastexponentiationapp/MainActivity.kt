@@ -124,6 +124,12 @@ class MainActivity : AppCompatActivity() {
             binding.resultBottom.text = it.toString()
         } }
 
+        // sync button
+        binding.sync.setOnClickListener {
+            binding.baseBottom.setText(binding.resultUpper.text)
+            binding.numBottom.text = binding.numUpper.text
+        }
+
         setContentView(binding.root)
     }
 }

@@ -18,10 +18,13 @@
 
         <EditText
             android:id="@+id/base"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
 
-            android:inputType="numberDecimal" />
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,10 +33,13 @@
 
         <EditText
             android:id="@+id/exp"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
 
-            android:inputType="numberDecimal" />
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,10 +48,13 @@
 
         <EditText
             android:id="@+id/num"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
 
-            android:inputType="numberDecimal" />
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
         <TextView
             android:layout_width="wrap_content"

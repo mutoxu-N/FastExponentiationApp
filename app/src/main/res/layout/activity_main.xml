@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/container_upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -14,13 +15,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
+        android:background="@drawable/bg_frame"
+
         android:layout_margin="10dp"
         android:padding="5dp"
         android:gravity="center"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/pivot1"
+            android:id="@+id/pivot_upper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -33,7 +36,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/base"
+                android:id="@+id/base_upper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="100dp"
@@ -42,7 +45,7 @@
                 android:inputType="numberDecimal"
                 android:maxLength="10"
                 android:selectAllOnFocus="true"
-                android:gravity="end"
+                android:gravity="center"
                 android:textSize="@dimen/spEdit"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
@@ -54,7 +57,7 @@
                 android:text="@string/caret" />
 
             <EditText
-                android:id="@+id/exp"
+                android:id="@+id/exp_upper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="100dp"
@@ -63,7 +66,7 @@
                 android:inputType="numberDecimal"
                 android:maxLength="10"
                 android:selectAllOnFocus="true"
-                android:gravity="end"
+                android:gravity="center"
                 android:textSize="@dimen/spEdit"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
@@ -77,7 +80,7 @@
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pivot1">
+            app:layout_constraintTop_toBottomOf="@id/pivot_upper">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -87,7 +90,7 @@
                 android:text="@string/mod" />
 
             <EditText
-                android:id="@+id/num"
+                android:id="@+id/num_upper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="100dp"
@@ -96,7 +99,7 @@
                 android:inputType="numberDecimal"
                 android:maxLength="10"
                 android:selectAllOnFocus="true"
-                android:gravity="end"
+                android:gravity="center"
                 android:textSize="@dimen/spEdit"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
@@ -108,7 +111,7 @@
                 android:text="@string/equal" />
 
             <TextView
-                android:id="@+id/result"
+                android:id="@+id/result_upper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/spResult"
@@ -116,5 +119,119 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/container_upper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:background="@drawable/bg_frame"
+
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/pivot_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/base_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="100dp"
+
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:selectAllOnFocus="true"
+                android:gravity="center"
+                android:textSize="@dimen/spEdit"
+                tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:textSize="@dimen/spText"
+                android:text="@string/caret" />
+
+            <EditText
+                android:id="@+id/exp_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="100dp"
+
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:selectAllOnFocus="true"
+                android:gravity="center"
+                android:textSize="@dimen/spEdit"
+                tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="10dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pivot_bottom">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:textSize="@dimen/spText"
+                android:text="@string/mod" />
+
+            <EditText
+                android:id="@+id/num_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="100dp"
+
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:selectAllOnFocus="true"
+                android:gravity="center"
+                android:textSize="@dimen/spEdit"
+                tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:textSize="@dimen/spText"
+                android:text="@string/equal" />
+
+            <TextView
+                android:id="@+id/result_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/spResult"
+                android:text="" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

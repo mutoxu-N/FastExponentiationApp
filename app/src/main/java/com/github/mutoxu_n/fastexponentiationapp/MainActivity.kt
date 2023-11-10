@@ -1,7 +1,8 @@
 package com.github.mutoxu_n.fastexponentiationapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.github.mutoxu_n.fastexponentiationapp.databinding.ActivityMainBinding
@@ -19,16 +20,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.base.doOnTextChanged { text, _, _, _ ->
             val v = Integer.parseInt(text.toString())
+            Log.e(this.localClassName, "base: $v")
             viewModel.setBase(v)
         }
 
         binding.exp.doOnTextChanged { text, _, _, _ ->
             val v = Integer.parseInt(text.toString())
+            Log.e(this.localClassName, "exp: $v")
             viewModel.setExp(v)
         }
 
         binding.num.doOnTextChanged { text, _, _, _ ->
             val v = Integer.parseInt(text.toString())
+            Log.e(this.localClassName, "num: $v")
             viewModel.setNum(v)
         }
 

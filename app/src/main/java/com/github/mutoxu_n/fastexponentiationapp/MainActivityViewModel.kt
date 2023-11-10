@@ -30,25 +30,13 @@ class MainActivityViewModel: ViewModel() {
     val resultBottom: LiveData<Long> get() = _resultBottom
 
     private fun calc(isUpper: Boolean) {
-        var b = if(isUpper) baseUpper.value else baseBottom.value
-        var e = if(isUpper) expUpper.value else expBottom.value
+        val b = if(isUpper) baseUpper.value else baseBottom.value
+        val e = if(isUpper) expUpper.value else expBottom.value
         val n = if(isUpper) numUpper.value else numBottom.value
         if(b == null || e == null || n == null) return
 
-        // 高速指数演算
-        var r = 1L
-        while(e!! > 0) {
-            if(e and 1 == 1L) {
-                r *= b
-                r %= n
-            }
-            e = e shr 1
-            b *= b
-            b %= n
-        }
-
         // output
-        (if(isUpper) _resultUpper else _resultBottom).value = r
+        (if(isUpper) _resultUpper else _resultBottom).value = fastExp(b, e, n)
     }
 
     fun setBase(base: Long, isUpper: Boolean) {
@@ -64,6 +52,25 @@ class MainActivityViewModel: ViewModel() {
     fun setNum(num: Long, isUpper: Boolean) {
         (if(isUpper) _numUpper else _numBottom).value = num
         calc(isUpper)
+    }
+
+    private fun fastExp(base: Long, exp: Long, num: Long): Long {
+        // 高速指数演算
+        var r = 1L
+        var b = base
+        var e = exp
+
+        while(e > 0) {
+            if(e and 1 == 1L) {
+                r *= b
+                r %= num
+            }
+            e = e shr 1
+            b *= b
+            b %= num
+        }
+
+        return r
     }
 
 }

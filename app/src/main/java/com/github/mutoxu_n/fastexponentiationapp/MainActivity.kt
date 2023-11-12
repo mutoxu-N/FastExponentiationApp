@@ -130,6 +130,13 @@ class MainActivity : AppCompatActivity() {
             binding.numBottom.text = binding.numUpper.text
         }
 
+        binding.sync.setOnLongClickListener {
+            binding.baseBottom.setText(binding.resultUpper.text)
+            binding.numBottom.text = binding.numUpper.text
+            binding.expBottom.setText(viewModel.couple().toString())
+            true
+        }
+
         setContentView(binding.root)
     }
 }

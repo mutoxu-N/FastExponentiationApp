@@ -1,8 +1,10 @@
 package com.github.mutoxu_n.fastexponentiationapp
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlin.math.sqrt
 
 class MainActivityViewModel: ViewModel() {
     private var _baseUpper: MutableLiveData<Long> = MutableLiveData(null)
@@ -54,6 +56,13 @@ class MainActivityViewModel: ViewModel() {
         calc(isUpper)
     }
 
+    fun couple(): Long {
+        val exp = expUpper.value
+        val num = numUpper.value
+        if(exp == null || num  == null) return -1
+        return inv(exp, eulerPhi(num))
+    }
+
     private fun fastExp(base: Long, exp: Long, num: Long): Long {
         // 高速指数演算
         var r = 1L
@@ -71,6 +80,91 @@ class MainActivityViewModel: ViewModel() {
         }
 
         return r
+    }
+
+    private fun inv(base: Long, num: Long): Long {
+        Log.e(this@MainActivityViewModel.javaClass.name, "base = $base, num = $num")
+        // gcd=1なら互いに素
+        var x = base
+        var y = num
+        var r = x % y
+        while(r != 0L) {
+            x = y
+            y = r
+            r = x % y
+        }
+        Log.e(this@MainActivityViewModel.javaClass.name, "y = $y")
+        if(y != 1L) return -1L
+
+
+        var r1 = num
+        var r2 = base
+        var u1 = 0L
+        var u2 = 1L
+        var q: Long
+        var w: Long
+
+        while (r1 > 0) {
+            q = r2 / r1
+            w = r2 - q*r1
+            r2 = r1
+            r1 = w
+            w = u2 - q*u1
+            u2 = u1
+            u1 = w
+        }
+
+        return (u2 + num) % num
+    }
+
+    private fun eulerPhi(num: Long): Long {
+        // 素因数分解
+        val p = mutableListOf<Pair<Long, Long>>()
+        var n = num
+
+        var i = 0L
+        if (n % 2L == 0L) {
+            i = 1
+            while (n % 2L == 0L) {
+                n /= 2L
+                i *= 2
+            }
+            p.add(Pair(2, i))
+        }
+
+        var j = 3L
+        while (n > 1L) {
+            if(isPrime(n, j)) {
+                p.add(Pair(n, n))
+                break
+            }
+
+            if (n % j == 0L) {
+                i = 1
+                while (n % j == 0L) {
+                    n /= j
+                    i *= j
+                }
+                p.add(Pair(j, i))
+            }
+            j += 2L
+        }
+
+        // phi function
+        var t = 1L
+        for(pair in p)
+            t *= pair.second - pair.second/pair.first
+
+        return t
+    }
+
+    private fun isPrime(num: Long, start: Long): Boolean {
+        if(num == 2L) return true
+        if(num < 2L || num%2L == 0L) return false
+
+        for(i in start/2*2+1 until sqrt(num.toDouble()).toLong() step 2)
+            if(num % i == 0L) return false
+        return true
     }
 
 }

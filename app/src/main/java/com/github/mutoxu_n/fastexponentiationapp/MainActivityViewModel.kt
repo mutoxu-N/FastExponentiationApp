@@ -1,6 +1,5 @@
 package com.github.mutoxu_n.fastexponentiationapp
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -56,13 +55,15 @@ class MainActivityViewModel: ViewModel() {
         calc(isUpper)
     }
 
+    // 対となる鍵を探す
     fun couple(): Long {
         val exp = expUpper.value
         val num = numUpper.value
-        if(exp == null || num  == null) return -1
+        if(exp == null || num  == null) return 0
         return inv(exp, eulerPhi(num))
     }
 
+    // 高速指数演算
     private fun fastExp(base: Long, exp: Long, num: Long): Long {
         // 高速指数演算
         var r = 1L
@@ -82,21 +83,8 @@ class MainActivityViewModel: ViewModel() {
         return r
     }
 
+    // 逆元計算
     private fun inv(base: Long, num: Long): Long {
-        Log.e(this@MainActivityViewModel.javaClass.name, "base = $base, num = $num")
-        // gcd=1なら互いに素
-        var x = base
-        var y = num
-        var r = x % y
-        while(r != 0L) {
-            x = y
-            y = r
-            r = x % y
-        }
-        Log.e(this@MainActivityViewModel.javaClass.name, "y = $y")
-        if(y != 1L) return -1L
-
-
         var r1 = num
         var r2 = base
         var u1 = 0L
@@ -114,15 +102,18 @@ class MainActivityViewModel: ViewModel() {
             u1 = w
         }
 
-        return (u2 + num) % num
+        val r = (u2 + num) % num
+        if(base * r % num == 1L) return r
+        return 0
     }
 
+    // オイラーのφ関数
     private fun eulerPhi(num: Long): Long {
         // 素因数分解
         val p = mutableListOf<Pair<Long, Long>>()
         var n = num
+        var i: Long
 
-        var i = 0L
         if (n % 2L == 0L) {
             i = 1
             while (n % 2L == 0L) {

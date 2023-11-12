@@ -1,5 +1,6 @@
 package com.github.mutoxu_n.fastexponentiationapp
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,8 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.mutoxu_n.fastexponentiationapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    protected lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainActivityViewModel
+    private lateinit var errorDrawable: Drawable
 
     private enum class Type {
         BASE, EXP, NUM
@@ -23,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         // init
         binding = ActivityMainBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+        errorDrawable = AppCompatResources.getDrawable(
+            this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
+            .apply { setTint(getColor(R.color.red)) }
 
         // upper side
         binding.baseUpper.addTextChangedListener(OnTextEdited(binding.baseUpper, Type.BASE, true))
@@ -49,9 +54,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.sync.setOnLongClickListener {
-            binding.baseBottom.setText(binding.resultUpper.text)
-            binding.numBottom.text = binding.numUpper.text
-            binding.expBottom.setText(viewModel.couple().toString())
+            it?.performClick()
+            val c = viewModel.couple()
+            if(c != 0L || binding.expBottom.text.toString().isNotEmpty()) {
+                binding.expBottom.setText(c.toString())
+                if(c == 0L) binding.expBottom.background = errorDrawable
+            }
             true
         }
 
@@ -62,9 +70,6 @@ class MainActivity : AppCompatActivity() {
         private val view: View
         private val type: Type
         private val isUpper: Boolean
-        private val errorDrawable = AppCompatResources.getDrawable(
-            this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
-            .apply { setTint(getColor(R.color.red)) }
 
         init {
             this.view = view

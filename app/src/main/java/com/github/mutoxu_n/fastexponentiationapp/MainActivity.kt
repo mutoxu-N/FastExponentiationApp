@@ -1,15 +1,21 @@
 package com.github.mutoxu_n.fastexponentiationapp
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.github.mutoxu_n.fastexponentiationapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    protected lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainActivityViewModel
+
+    private enum class Type {
+        BASE, EXP, NUM
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,106 +25,18 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         // upper side
-        binding.baseUpper.doOnTextChanged { text, _, _, _ ->
-            try {
-                val v = text.toString().toLong()
-                binding.baseUpper.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
-                viewModel.setBase(v, true)
-
-            } catch (e: NumberFormatException) {
-                if(text.toString().isNotEmpty()){
-                    val drawable = AppCompatResources.getDrawable(
-                        this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
-                    drawable.setTint(getColor(R.color.red))
-                    binding.baseUpper.background = drawable
-                }
-            }
-        }
-
-        binding.expUpper.doOnTextChanged { text, _, _, _ ->
-            try {
-                val v = text.toString().toLong()
-                binding.expUpper.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
-                viewModel.setExp(v, true)
-
-            } catch (e: NumberFormatException) {
-                if(text.toString().isNotEmpty()){
-                    val drawable = AppCompatResources.getDrawable(
-                        this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
-                    drawable.setTint(getColor(R.color.red))
-                    binding.expUpper.background = drawable
-                }
-            }
-        }
-
-        binding.numUpper.doOnTextChanged { text, _, _, _ ->
-            try {
-                val v = text.toString().toLong()
-                binding.numUpper.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
-                viewModel.setNum(v, true)
-
-            } catch (e: NumberFormatException) {
-                if(text.toString().isNotEmpty()){
-                    val drawable = AppCompatResources.getDrawable(
-                        this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
-                    drawable.setTint(getColor(R.color.red))
-                    binding.numUpper.background = drawable
-                }
-            }
-        }
+        binding.baseUpper.addTextChangedListener(OnTextEdited(binding.baseUpper, Type.BASE, true))
+        binding.expUpper.addTextChangedListener(OnTextEdited(binding.expUpper, Type.EXP, true))
+        binding.numUpper.addTextChangedListener(OnTextEdited(binding.numUpper, Type.NUM, true))
 
         viewModel.resultUpper.observe(this) { it?.let {
             binding.resultUpper.text = it.toString()
         } }
 
         // bottom side
-        binding.baseBottom.doOnTextChanged { text, _, _, _ ->
-            try {
-                val v = text.toString().toLong()
-                binding.baseBottom.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
-                viewModel.setBase(v, false)
-
-            } catch (e: NumberFormatException) {
-                if(text.toString().isNotEmpty()){
-                    val drawable = AppCompatResources.getDrawable(
-                        this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
-                    drawable.setTint(getColor(R.color.red))
-                    binding.baseBottom.background = drawable
-                }
-            }
-        }
-
-        binding.expBottom.doOnTextChanged { text, _, _, _ ->
-            try {
-                val v = text.toString().toLong()
-                binding.expBottom.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
-                viewModel.setExp(v, false)
-
-            } catch (e: NumberFormatException) {
-                if(text.toString().isNotEmpty()){
-                    val drawable = AppCompatResources.getDrawable(
-                        this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
-                    drawable.setTint(getColor(R.color.red))
-                    binding.expBottom.background = drawable
-                }
-            }
-        }
-
-        binding.numBottom.doOnTextChanged { text, _, _, _ ->
-            try {
-                val v = text.toString().toLong()
-                binding.numBottom.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
-                viewModel.setNum(v, false)
-
-            } catch (e: NumberFormatException) {
-                if(text.toString().isNotEmpty()){
-                    val drawable = AppCompatResources.getDrawable(
-                        this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
-                    drawable.setTint(getColor(R.color.red))
-                    binding.numBottom.background = drawable
-                }
-            }
-        }
+        binding.baseBottom.addTextChangedListener(OnTextEdited(binding.baseBottom, Type.BASE, false))
+        binding.expBottom.addTextChangedListener(OnTextEdited(binding.expBottom, Type.EXP, false))
+        binding.numBottom.addTextChangedListener(OnTextEdited(binding.numBottom, Type.NUM, false))
 
         viewModel.resultBottom.observe(this) { it?.let {
             binding.resultBottom.text = it.toString()
@@ -138,5 +56,40 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    private inner class OnTextEdited(view: View, type: Type, isUpper: Boolean): TextWatcher {
+        private val view: View
+        private val type: Type
+        private val isUpper: Boolean
+        private val errorDrawable = AppCompatResources.getDrawable(
+            this@MainActivity, androidx.appcompat.R.drawable.abc_edit_text_material)!!
+            .apply { setTint(getColor(R.color.red)) }
+
+        init {
+            this.view = view
+            this.type = type
+            this.isUpper = isUpper
+        }
+
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        override fun afterTextChanged(text: Editable?) {
+            try {
+                // 入力をViewModelに渡す
+                val value = text.toString().toLong()
+                view.setBackgroundResource(com.google.android.material.R.drawable.abc_edit_text_material)
+                when(type) {
+                    Type.BASE -> viewModel.setBase(value, isUpper)
+                    Type.EXP -> viewModel.setExp(value, isUpper)
+                    Type.NUM -> viewModel.setNum(value, isUpper)
+                }
+
+            } catch (e: NumberFormatException) {
+                // 入力エラー時に赤く表示
+                if(text.toString().isNotEmpty()) view.background = errorDrawable
+            }
+        }
     }
 }

@@ -173,7 +173,7 @@ private fun ExponentialDisplay(
                 shape = MaterialTheme.shapes.medium,
             )
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surface,
                 shape = MaterialTheme.shapes.medium,
             )
             .padding(10.dp, 10.dp),
@@ -247,7 +247,7 @@ private fun PrimeDisplay(
                 shape = MaterialTheme.shapes.medium,
             )
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surface,
                 shape = MaterialTheme.shapes.medium,
             )
             .padding(10.dp, 10.dp),

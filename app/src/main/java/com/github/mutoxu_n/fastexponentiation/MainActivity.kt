@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -64,6 +65,10 @@ fun Screen(
     var p by rememberSaveable { mutableLongStateOf(-1L) }
     var q by rememberSaveable { mutableLongStateOf(-1L) }
 
+    // 平文・暗号文
+    var g by rememberSaveable { mutableLongStateOf(-1L) }
+    var s by rememberSaveable { mutableLongStateOf(-1L) }
+
     // 秘密鍵
     var secret by rememberSaveable { mutableLongStateOf(-1L) }
 
@@ -81,14 +86,18 @@ fun Screen(
         ExponentialDisplay(
             p = p,
             q = q,
+            base = g,
+            onBaseChange = { g = it },
             exp = public,
-            onExpChange = { public = it }
+            onExpChange = { public = it },
         )
 
         //復号化
         ExponentialDisplay(
             p = p,
             q = q,
+            base = s,
+            onBaseChange = { s = it },
             exp = secret,
             onExpChange = { secret = it }
         )
@@ -100,6 +109,14 @@ fun Screen(
             onPChange = { p = it },
             onQChange = { q = it },
         )
+
+        Button(
+            modifier = modifier
+                .fillMaxWidth(),
+            onClick = {
+                s = fastExp(g, public, p*q)
+            }
+        ) { Text("Sync") }
     }
 }
 
@@ -108,12 +125,13 @@ private fun ExponentialDisplay(
     modifier: Modifier = Modifier,
     p: Long,
     q: Long,
+    base: Long,
     exp: Long,
     onExpChange: (Long) -> Unit,
+    onBaseChange: (Long) -> Unit,
 ) {
-    var base by rememberSaveable { mutableLongStateOf(-1L) }
-    val g by remember { derivedStateOf { gcd(base, p*q) } }
-    var isBaseError by rememberSaveable { mutableStateOf(base <= 0 || g != 1L) }
+    val g = gcd(base, p*q)
+    val isBaseError = base <= 0 || g != 1L
     val isExpError = exp <= 0
 
     Column(
@@ -140,10 +158,7 @@ private fun ExponentialDisplay(
                 modifier = modifier
                     .weight(1f),
                 num = base,
-                onNumChange = {
-                    base = it
-                    isBaseError = base <= 0
-                }
+                onNumChange = { onBaseChange(it) }
             )
 
             Text(

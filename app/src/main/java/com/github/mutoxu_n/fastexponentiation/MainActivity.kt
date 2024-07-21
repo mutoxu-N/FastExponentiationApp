@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.mutoxu_n.fastexponentiation.ui.theme.FastExponentiationTheme
 import kotlin.math.sqrt
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +68,6 @@ fun Screen(
 
     // 公開鍵
     var public by rememberSaveable { mutableLongStateOf(-1L) }
-    var isDError = public <= 0
 
     val n = p*q
     val phi = (p-1)*(q-1)
@@ -111,9 +111,35 @@ fun Screen(
                 .fillMaxWidth(),
             onClick = {
                 s = fastExp(g, public, n)
+
+                if(gcd(public, phi) == 1L) {
+                    // 逆元が存在するなら同期
+                    val v = inv(public, phi)
+                    secret = v
+                }
             },
             enabled = p>0 && q>0 && gcd(g, n) == 1L,
         ) { Text("Sync") }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            onClick = {
+                while(true) {
+                    val i = Random.nextLong(1L, phi)
+                    if(gcd(i, phi) != 1L) continue
+
+                    val v = inv(i, phi)
+                    if(v > 0) {
+                        public = i
+                        secret = v
+                    }
+                    break
+                }
+            },
+            enabled = p>0 && q>0,
+        ) { Text("Create Random Keys") }
+
     }
 }
 

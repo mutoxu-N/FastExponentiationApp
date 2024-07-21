@@ -9,6 +9,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -76,7 +77,7 @@ fun Screen(
         modifier = modifier
             .fillMaxSize()
             .padding(10.dp),
-        verticalArrangement = Arrangement.spacedBy(5.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         //暗号化
         ExponentialDisplay(
@@ -106,39 +107,46 @@ fun Screen(
             onQChange = { q = it },
         )
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(),
-            onClick = {
-                s = fastExp(g, public, n)
 
-                if(gcd(public, phi) == 1L) {
-                    // 逆元が存在するなら同期
-                    val v = inv(public, phi)
-                    secret = v
-                }
-            },
-            enabled = p>0 && q>0 && gcd(g, n) == 1L,
-        ) { Text("Sync") }
+        Column {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onClick = {
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(),
-            onClick = {
-                while(true) {
-                    val i = Random.nextLong(1L, phi)
-                    if(gcd(i, phi) != 1L) continue
-
-                    val v = inv(i, phi)
-                    if(v > 0) {
-                        public = i
+                    s = fastExp(g, public, n)
+                    if(gcd(public, phi) == 1L) {
+                        // 逆元が存在するなら同期
+                        val v = inv(public, phi)
                         secret = v
                     }
-                    break
-                }
-            },
-            enabled = p>0 && q>0,
-        ) { Text("Create Random Keys") }
+                },
+                enabled = p>0 && q>0 && gcd(g, n) == 1L,
+            ) { Text("Sync") }
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onClick = {
+                    while(true) {
+                        val i = Random.nextLong(1L, phi)
+                        if(gcd(i, phi) != 1L) continue
+
+                        val v = inv(i, phi)
+                        if(v > 0) {
+                            public = i
+                            secret = v
+                        }
+                        break
+                    }
+
+                    if(g > 0 && gcd(g, n) == 1L) {
+                        s = fastExp(g, public, n)
+                    }
+                },
+                enabled = p>0 && q>0,
+            ) { Text("Create Random Keys") }
+        }
 
     }
 }
@@ -248,6 +256,9 @@ private fun PrimeDisplay(
         Row {
             // P
             PrimeInput(modifier = modifier.weight(1f), name = "P", p = p) { onPChange(it) }
+
+            Spacer(modifier = Modifier.weight(0.1f))
+
             // Q
             PrimeInput(modifier = modifier.weight(1f), name = "Q", p = q) { onQChange(it) }
         }
@@ -285,7 +296,8 @@ private fun PrimeInput(
         DecimalInput(
             modifier = modifier
                 .weight(1f),
-            num = p
+            num = p,
+            validate = { isPrime(it) },
         ) {
             isError = !isPrime(it)
             onPChange(it)

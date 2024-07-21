@@ -176,7 +176,7 @@ private fun ExponentialDisplay(
                 color = MaterialTheme.colorScheme.surface,
                 shape = MaterialTheme.shapes.medium,
             )
-            .padding(10.dp, 10.dp),
+            .padding(20.dp, 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
@@ -250,7 +250,7 @@ private fun PrimeDisplay(
                 color = MaterialTheme.colorScheme.surface,
                 shape = MaterialTheme.shapes.medium,
             )
-            .padding(10.dp, 10.dp),
+            .padding(20.dp, 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row {

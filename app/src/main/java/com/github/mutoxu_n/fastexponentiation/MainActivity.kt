@@ -6,8 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,20 +20,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.mutoxu_n.fastexponentiation.ui.theme.FastExponentiationTheme
@@ -76,6 +69,9 @@ fun Screen(
     var public by rememberSaveable { mutableLongStateOf(-1L) }
     var isDError = public <= 0
 
+    val n = p*q
+    val phi = (p-1)*(q-1)
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -111,11 +107,12 @@ fun Screen(
         )
 
         Button(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth(),
             onClick = {
-                s = fastExp(g, public, p*q)
-            }
+                s = fastExp(g, public, n)
+            },
+            enabled = p>0 && q>0 && gcd(g, n) == 1L,
         ) { Text("Sync") }
     }
 }
@@ -130,8 +127,7 @@ private fun ExponentialDisplay(
     onExpChange: (Long) -> Unit,
     onBaseChange: (Long) -> Unit,
 ) {
-    val g = gcd(base, p*q)
-    val isBaseError = base <= 0 || g != 1L
+    val isBaseError = base <= 0 || gcd(base, p*q) != 1L
     val isExpError = exp <= 0
 
     Column(
@@ -158,6 +154,7 @@ private fun ExponentialDisplay(
                 modifier = modifier
                     .weight(1f),
                 num = base,
+                validate = { it > 0 && gcd(it, p*q) == 1L },
                 onNumChange = { onBaseChange(it) }
             )
 
@@ -274,11 +271,12 @@ private fun PrimeInput(
 private fun DecimalInput(
     modifier: Modifier = Modifier,
     num: Long,
+    validate: (Long) -> Boolean = { it > 0 },
     onNumChange: (Long) -> Unit,
 ) {
     TextField(
         modifier = modifier,
-        value = if(num <= 0) "" else "$num",
+        value = if(num > 0) "$num" else "",
         onValueChange = {
             if(it.isEmpty()) onNumChange(-1L)
             else {
@@ -290,7 +288,7 @@ private fun DecimalInput(
         textStyle = TextStyle.Default.copy(
             fontSize = MaterialTheme.typography.displaySmall.fontSize,
         ),
-        isError = num <= 0,
+        isError = !validate(num),
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Decimal,
         ),
